@@ -77,20 +77,20 @@ end
 dogs.each do |dog|
   dog = Dog.find_or_initialize_by(dog)
 
-  if dog.user.nil? || dog.new_record?
+  if dog.new_record? || dog.user.nil?
     dog.user = active_record_users.sample
-    dog.save
   end
 
-  directory_name = File.join(Rails.root, 'db', 'seed', "#{dog[:name].downcase}", "*")
+  dog.save
+
+  directory_name = File.join(Rails.root, 'db', 'seed', dog[:name].downcase, "*")
 
   Dir.glob(directory_name).each do |filename|
-    if !dog.images.any?{|i| i.filename == filename}
-      dog.images.attach(io: File.open(filename), filename: filename.split("/").pop)
+    split_filename = filename.split("/").pop
+
+    if !dog.images.any?{|i| i.filename == split_filename}
+      dog.images.attach(io: File.open(filename), filename: split_filename)
       sleep 1
     end
   end
 end
-
-
-
