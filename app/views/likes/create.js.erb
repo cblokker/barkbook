@@ -1,0 +1,2 @@
+$(".dog-like-button#dog-<%= @like.dog.id %>")
+  .html('<%= j render(partial: "like_button", locals: { dog:  @like.dog }) %>');

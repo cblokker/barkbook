@@ -1,0 +1,7 @@
+<div class='dog-like-button' id="dog-<%= dog.id %>" >
+  <%= button_to "Like: (#{dog.likes_count} total #{(dog.likes_count) == 1 ? 'like' : 'likes'})",
+    dog_likes_path(dog),
+    method: :post,
+    remote: true,
+    disabled: disable_like_button?(dog) %>
+</div>

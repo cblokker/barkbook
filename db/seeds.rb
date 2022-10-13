@@ -49,13 +49,47 @@ dogs = [
   },
 ]
 
+users = [
+  {
+    name: 'Chase',
+    email: 'test@gmail.com',
+    password: 'password',
+  },
+  {
+    name: 'John Doe',
+    email: 'john@doe.com',
+    password: 'password'
+  },
+  {
+    name: 'John John',
+    email: 'john@john.com',
+    password: 'password'
+  },
+]
+
+active_record_users = users.map do |user|
+  u = User.find_or_initialize_by(user.except(:password))
+  u.password = user[:password]
+  u.save
+  u
+end
+
 dogs.each do |dog|
-  dog = Dog.find_or_create_by(name: dog[:name], description: dog[:description])
-  directory_name = File.join(Rails.root, 'db', 'seed', "#{dog[:name].downcase}", "*")
+  dog = Dog.find_or_initialize_by(dog)
+
+  if dog.new_record? || dog.user.nil?
+    dog.user = active_record_users.sample
+  end
+
+  dog.save
+
+  directory_name = File.join(Rails.root, 'db', 'seed', dog[:name].downcase, "*")
 
   Dir.glob(directory_name).each do |filename|
-    if !dog.images.any?{|i| i.filename == filename}
-      dog.images.attach(io: File.open(filename), filename: filename.split("/").pop)
+    split_filename = filename.split("/").pop
+
+    if !dog.images.any?{|i| i.filename == split_filename}
+      dog.images.attach(io: File.open(filename), filename: split_filename)
       sleep 1
     end
   end

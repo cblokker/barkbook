@@ -4,3 +4,5 @@
     <%= image_tag url_for(dog.images.first), class: "dog-photo", alt: "Photo of #{dog.name}" %>
   </article>
 </a>
+
+<%= render partial: 'likes/like_button', locals: { dog: dog } %>
