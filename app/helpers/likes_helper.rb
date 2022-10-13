@@ -5,9 +5,7 @@ module LikesHelper
 
   def enable_like_button?(dog)
     current_user &&
-    current_user == dog.user &&
+    current_user != dog.user &&
     !current_user.liked?(dog)
   end
 end
-
-

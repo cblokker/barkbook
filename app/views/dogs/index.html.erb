@@ -1,8 +1,14 @@
-<%= form_tag dogs_path, method: :get, local: true do |form| %>
-  <%= select_tag :order, options_for_select(list_of_sorting_methods, params[:order]) %>
-  <%= submit_tag "Sort" %>
-<% end%>
+<br>
+<%= paginate @dogs %>
 
+<% @dogs.each_with_index do |dog, index| %>
+  <% if render_ad?(index, @ad_frequency) %>
+    <%= render partial: 'advertisements/thumbnail', locals: { ad: @ad } %>
+  <% end %>
+
+  <%= render partial: 'thumbnail', locals: { dog: dog }  %>
+<% end %>
+
+<br>
 <%= paginate @dogs %>
-<%= render partial: 'thumbnail', collection: @dogs, as: :dog %>
-<%= paginate @dogs %>
+<br>

@@ -9,6 +9,9 @@ class DogsController < ApplicationController
       .order_by(params[:order] || 'name')
       .page(params[:page])
       .per(params[:limit] || 5)
+
+    @ad = Advertisement.find_by(name: 'default_ad')
+    @ad_frequency = 2
   end
 
   # GET /dogs/1
