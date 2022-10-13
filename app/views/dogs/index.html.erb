@@ -2,7 +2,7 @@
 <%= paginate @dogs %>
 
 <% @dogs.each_with_index do |dog, index| %>
-  <% if render_ad?(index, @ad_frequency) %>
+  <% if @ad && render_ad?(index, @ad_frequency) %>
     <%= render partial: 'advertisements/thumbnail', locals: { ad: @ad } %>
   <% end %>
 
