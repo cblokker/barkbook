@@ -3,6 +3,9 @@ FactoryBot.define do
     sequence :name do |n|
       "Good Pup #{n}"
     end
+
+    association :user, name: 'bob'
+
     after(:build) do |dog|
       dog.images.attach(
         io: File.open(Rails.root.join('spec', 'factories', 'images', 'bowie_toys.jpg')),
