@@ -5,17 +5,26 @@ describe 'Dog resource', type: :feature do
     visit new_dog_path
     fill_in 'Name', with: 'Speck'
     fill_in 'Description', with: 'Just a dog'
-    attach_file 'Image', 'spec/fixtures/images/speck.jpg'
+    attach_file(
+      'Image',
+      ['spec/fixtures/images/speck.jpg', 'spec/fixtures/images/speck.jpg']
+    )
     click_button 'Create Dog'
     expect(Dog.count).to eq(1)
+    expect(Dog.last.images.count).to eq(2)
   end
 
   it 'can edit a dog profile' do
     dog = create(:dog)
     visit edit_dog_path(dog)
     fill_in 'Name', with: 'Speck'
+    attach_file(
+      'Image',
+      ['spec/fixtures/images/speck.jpg', 'spec/fixtures/images/speck.jpg']
+    )
     click_button 'Update Dog'
     expect(dog.reload.name).to eq('Speck')
+    expect(dog.images.count).to eq(3)
   end
 
   it 'can delete a dog profile' do
