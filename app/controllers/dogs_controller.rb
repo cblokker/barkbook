@@ -6,7 +6,7 @@ class DogsController < ApplicationController
   # GET /dogs.json
   def index
     @dogs = Dog
-      .order(:name)
+      .order_by(params[:order] || 'name')
       .page(params[:page])
       .per(params[:limit] || 5)
   end
